@@ -16,6 +16,7 @@ public class CourtCaseResponseMapper {
         return CourtCaseResponse.builder()
                 .caseId(courtCaseEntity.getCaseId())
                 .caseNo(courtCaseEntity.getCaseNo())
+                .crn(courtCaseEntity.getCrn())
                 .courtRoom(courtCaseEntity.getCourtRoom())
                 .courtCode(courtCaseEntity.getCourtCode())
                 .data(courtCaseEntity.getData())
@@ -25,6 +26,9 @@ public class CourtCaseResponseMapper {
                 .probationStatus(courtCaseEntity.getProbationStatus())
                 .sessionStartTime(courtCaseEntity.getSessionStartTime())
                 .suspendedSentenceOrder(courtCaseEntity.getSuspendedSentenceOrder())
+                .breach(courtCaseEntity.getBreach())
+                .defendantName(courtCaseEntity.getDefendantName())
+                .defendantAddress(courtCaseEntity.getDefendantAddress())
                 .build();
     }
 

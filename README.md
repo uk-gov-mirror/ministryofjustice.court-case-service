@@ -11,8 +11,6 @@ In order to run the service locally, a postgres database is required, the easies
 
 The service uses Lombok and so annotation processors must be [turned on within the IDE](https://www.baeldung.com/lombok-ide).
 
-
-
 Building and running
 ---
 
@@ -24,6 +22,41 @@ To run the service, ensure there is an instance of Postgres running and then run
 
 ```./gradlew bootRun```
 
+Dependencies
+---
+The service has an attached Postgres database as well as several back ends the details of which can be found in the [docker-compose.yml](docker-compose.yml) file.
+
+To run against local Dockerised back-ends and database
+
+```docker-compose up```
+
+There are also Wiremock stubs for each of the back end calls which the `test` Spring profile runs against, to run these use the following command along with `docker-compose up`
+
+```bash runMocks.sh```
+
+### Default port
+Starts the application on port '8080'.
+To override, set server.port (eg SERVER_PORT=8099 java -jar etc etc)
+
+### Application health
+```
+curl -X GET http://localhost:8080/health
+```
+
+### Application info
+```
+curl -X GET http://localhost:8080/info
+```
+
+### Application Ping
+```
+curl -X GET http://localhost:8080/ping
+```
+
+### Application Feature Flags
+```
+curl -X GET http://localhost:8080/feature-flags
+```
 
 Flyway commands
 ---
@@ -46,6 +79,6 @@ Check dependency versions
 
 ## Deployment
 
-Builds and deployments are setup in [Circle CI](https://circleci.com/gh/ministryofjustice/court-case-service) and configured in the [config file.](circleci.config.yml) 
+Builds and deployments are setup in [Circle CI](https://circleci.com/gh/ministryofjustice/court-case-service) and configured in the [config file.](.circleci/config.yml) 
 
 Helm is used to deploy the service to a Kubernetes Cluster using templates in the helm_deploy folder. 

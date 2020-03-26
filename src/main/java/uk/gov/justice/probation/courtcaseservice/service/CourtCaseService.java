@@ -71,6 +71,9 @@ public class CourtCaseService {
         existingCase.setData(courtCaseEntity.getData());
         existingCase.setPreviouslyKnownTerminationDate(courtCaseEntity.getPreviouslyKnownTerminationDate());
         existingCase.setSuspendedSentenceOrder(courtCaseEntity.getSuspendedSentenceOrder());
+        existingCase.setBreach(courtCaseEntity.getBreach());
+        existingCase.setDefendantName(courtCaseEntity.getDefendantName());
+        existingCase.setDefendantAddress(courtCaseEntity.getDefendantAddress());
 
         log.info("Court case updated for case {}", courtCaseEntity.getCaseNo());
         return courtCaseRepository.save(existingCase);

@@ -7,6 +7,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import uk.gov.justice.probation.courtcaseservice.jpa.entity.AddressPropertiesEntity;
 import uk.gov.justice.probation.courtcaseservice.jpa.entity.CourtCaseEntity;
 import uk.gov.justice.probation.courtcaseservice.jpa.entity.CourtEntity;
 import uk.gov.justice.probation.courtcaseservice.jpa.entity.OffenceEntity;
@@ -39,7 +40,11 @@ public class CourtCaseServiceTest {
     private static final LocalDate SEARCH_DATE = LocalDate.of(2020, 1, 16);
     private static final LocalDateTime LAST_UPDATED = LocalDateTime.of(2020, 2, 25, 9, 0);
     private static final boolean SUSPENDED_SENTENCE = true;
+    private static final boolean BREACH = true;
     private static final String DATA = "DATA";
+    private static final String DEFENDANT_NAME = "JTEST";
+    private static final AddressPropertiesEntity DEFENDANT_ADDRESS = new AddressPropertiesEntity("27", "Elm Place", "AB21 3ES", "Bangor", null, null);
+    private static final String CRN = "CRN";
 
     @Mock
     private CourtRepository courtRepository;
@@ -64,7 +69,7 @@ public class CourtCaseServiceTest {
     public void setup() {
         service = new CourtCaseService(courtRepository, courtCaseRepository);
         List<OffenceEntity> offences = Collections.singletonList(new OffenceEntity(null, null, "OFFENCE_TITLE", "OFFENCE_SUMMARY", "ACT", 1));
-        courtCase = new CourtCaseEntity(1234L, LAST_UPDATED, CASE_ID, CASE_NO, COURT_CODE, COURT_ROOM, SESSION_START_TIME, PROBATION_STATUS, TERMINATION_DATE, SUSPENDED_SENTENCE, offences, DATA);
+        courtCase = new CourtCaseEntity(1234L, LAST_UPDATED, CASE_ID, CASE_NO, COURT_CODE, COURT_ROOM, SESSION_START_TIME, PROBATION_STATUS, TERMINATION_DATE, SUSPENDED_SENTENCE, BREACH, offences, DEFENDANT_NAME, DEFENDANT_ADDRESS, DATA, CRN);
 
         when(courtRepository.findByCourtCode(COURT_CODE)).thenReturn(courtEntity);
         when(courtCaseRepository.save(caseEntityCaptor.capture())).thenReturn(courtCase);
@@ -164,6 +169,9 @@ public class CourtCaseServiceTest {
         assertThat(existingCourtCase.getPreviouslyKnownTerminationDate()).isEqualTo(TERMINATION_DATE);
         assertThat(existingCourtCase.getSessionStartTime()).isEqualTo(SESSION_START_TIME);
         assertThat(existingCourtCase.getSuspendedSentenceOrder()).isEqualTo(SUSPENDED_SENTENCE);
+        assertThat(existingCourtCase.getBreach()).isEqualTo(BREACH);
+        assertThat(existingCourtCase.getDefendantName()).isEqualTo(DEFENDANT_NAME);
+        assertThat(existingCourtCase.getDefendantAddress()).isEqualTo(DEFENDANT_ADDRESS);
 
         verify(courtCaseRepository).save(existingCourtCase);
     }

@@ -2,6 +2,7 @@ package uk.gov.justice.probation.courtcaseservice.controller.mapper;
 
 import org.junit.Before;
 import org.junit.Test;
+import uk.gov.justice.probation.courtcaseservice.jpa.entity.AddressPropertiesEntity;
 import uk.gov.justice.probation.courtcaseservice.jpa.entity.CourtCaseEntity;
 import uk.gov.justice.probation.courtcaseservice.jpa.entity.OffenceEntity;
 
@@ -22,6 +23,7 @@ public class CourtCaseResponseMapperTest {
     private static final String COURT_ROOM = "COURT_ROOM";
     private static final String PROBATION_STATUS = "PROBATION_STATUS";
     private static final boolean SUSPENDED_SENTENCE_ORDER = true;
+    private static final boolean BREACH = true;
     private static final String DATA = "DATA";
     private static final LocalDateTime LAST_UPDATED = LocalDateTime.of(2020, 2, 24, 1, 0);
     private static final LocalDateTime SESSION_START_TIME = LocalDateTime.of(2020, 2, 25, 1, 0);
@@ -29,9 +31,13 @@ public class CourtCaseResponseMapperTest {
     private static final String OFFENCE_TITLE = "OFFENCE_TITLE";
     private static final String OFFENCE_SUMMARY = "OFFENCE_SUMMARY";
     private static final String ACT = "ACT";
+    private static final String DEFENDANT_NAME = "DEFENDANT_NAME";
+    private static final String CRN = "CRN";
     private CourtCaseEntity courtCaseEntity;
     private List<OffenceEntity> offences;
     private CourtCaseResponseMapper courtCaseResponseMapper = new CourtCaseResponseMapper();
+    private AddressPropertiesEntity addressPropertiesEntity = new AddressPropertiesEntity("27", "Elm Place", "ad21 5dr", "Bangor", null, null);
+
 
     @Before
     public void setUp() {
@@ -55,7 +61,11 @@ public class CourtCaseResponseMapperTest {
         assertThat(courtCaseResponse.getPreviouslyKnownTerminationDate()).isEqualTo(PREVIOUSLY_KNOWN_TERMINATION_DATE);
         assertThat(courtCaseResponse.getProbationStatus()).isEqualTo(PROBATION_STATUS);
         assertThat(courtCaseResponse.getSuspendedSentenceOrder()).isEqualTo(SUSPENDED_SENTENCE_ORDER);
+        assertThat(courtCaseResponse.getBreach()).isEqualTo(BREACH);
+        assertThat(courtCaseResponse.getDefendantName()).isEqualTo(DEFENDANT_NAME);
+        assertThat(courtCaseResponse.getDefendantAddress()).isEqualTo(addressPropertiesEntity);
         assertThat(courtCaseResponse.getSessionStartTime()).isEqualTo(SESSION_START_TIME);
+        assertThat(courtCaseResponse.getCrn()).isEqualTo(CRN);
     }
 
     @Test
@@ -112,6 +122,6 @@ public class CourtCaseResponseMapperTest {
     }
 
     private CourtCaseEntity buildCourtCaseEntity(List<OffenceEntity> offences) {
-        return new CourtCaseEntity(ID, LAST_UPDATED, CASE_ID, CASE_NO, COURT_CODE, COURT_ROOM, SESSION_START_TIME, PROBATION_STATUS, PREVIOUSLY_KNOWN_TERMINATION_DATE, SUSPENDED_SENTENCE_ORDER, offences, DATA);
+        return new CourtCaseEntity(ID, LAST_UPDATED, CASE_ID, CASE_NO, COURT_CODE, COURT_ROOM, SESSION_START_TIME, PROBATION_STATUS, PREVIOUSLY_KNOWN_TERMINATION_DATE, SUSPENDED_SENTENCE_ORDER, BREACH, offences, DEFENDANT_NAME, addressPropertiesEntity, DATA, CRN);
     }
 }

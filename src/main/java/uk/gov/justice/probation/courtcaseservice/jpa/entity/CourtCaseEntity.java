@@ -57,12 +57,25 @@ public class CourtCaseEntity implements Serializable {
     @Column(name = "SUSPENDED_SENTENCE_ORDER")
     private Boolean suspendedSentenceOrder;
 
+    @Column(name = "BREACH")
+    private Boolean breach;
+
     @OneToMany(mappedBy = "courtCase", cascade = CascadeType.ALL)
     private List<OffenceEntity> offences = Collections.emptyList();
+
+    @Column(name = "DEFENDANT_NAME")
+    private String defendantName;
+
+    @Type(type = "jsonb")
+    @Column(columnDefinition = "jsonb", name = "DEFENDANT_ADDRESS")
+    private AddressPropertiesEntity defendantAddress;
 
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb", name = "DATA")
     private String data;
+
+    @Column(name = "CRN")
+    private String crn;
 
     public CourtSession getSession() {
         return CourtSession.from(sessionStartTime);
