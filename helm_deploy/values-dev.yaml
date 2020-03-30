@@ -24,6 +24,12 @@ env:
   nomis_oauth:
     base_url: https://gateway.t3.nomis-api.hmpps.dsd.io
 
+secrets:
+  db:
+    secret_name: court-case-service-rds-instance-output
+  service:
+    secret_name: court-case-service-secrets
+
 whitelist:
   office: "217.33.148.210/32"
   health-kick: "35.177.252.195/32"
