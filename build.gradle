@@ -16,6 +16,9 @@ repositories {
     maven {
         url 'https://s3-us-west-2.amazonaws.com/dynamodb-local/release'
     }
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 project.sourceCompatibility = 11
@@ -35,6 +38,8 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    agentDeps
+    agentDeps.transitive = false
 }
 
 jar {
@@ -186,6 +191,9 @@ dependencies {
     implementation 'net.logstash.logback:logstash-logback-encoder:6.4'
 
     testImplementation 'com.auth0:jwks-rsa:0.13.0'
+
+    agentDeps 'com.microsoft.azure:applicationinsights-agent:3.0.0-PREVIEW.5'
+    compile configurations.agentDeps
 }
 
 jacoco {
@@ -223,3 +231,10 @@ jacocoTestCoverageVerification {
     }
 }
 
+
+task copyAgent(type: Copy) {
+    from configurations.agentDeps
+    into "$buildDir/libs"
+}
+
+assemble.dependsOn copyAgent
