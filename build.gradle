@@ -192,7 +192,7 @@ dependencies {
 
     testImplementation 'com.auth0:jwks-rsa:0.13.0'
 
-    agentDeps 'com.microsoft.azure:applicationinsights-agent:3.0.0-PREVIEW.5'
+    agentDeps 'com.microsoft.azure:applicationinsights-agent:3.0.0-PREVIEW.6'
     compile configurations.agentDeps
 }
 
