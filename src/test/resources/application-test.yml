@@ -24,3 +24,9 @@ spring:
     properties:
       hibernate:
         format_sql: false
+
+pactbroker:
+  host: moj-court-case-service.pactflow.io
+  scheme: https
+  auth:
+    token: d2CE9t3IDOL0wJ8mR_QZrw
