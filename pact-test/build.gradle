@@ -1,0 +1,26 @@
+plugins {
+    id "java"
+    id "au.com.dius.pact"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation(platform("org.junit:junit-bom:5.7.0"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation 'au.com.dius.pact.provider:junit5:4.1.7'
+}
+
+pact {
+    publish {
+        pactBrokerUrl = 'https://moj-court-case-service.pactflow.io'
+        pactBrokerToken = 'bm1p5737J45Fu80Mzsqdhw'
+    }
+}
+
+
+test {
+    useJUnitPlatform()
+}
