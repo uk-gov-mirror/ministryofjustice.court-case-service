@@ -1,8 +1,5 @@
 package uk.gov.justice.probation.courtcaseservice.application;
 
-import com.microsoft.applicationinsights.TelemetryConfiguration;
-import com.microsoft.applicationinsights.extensibility.TelemetryModule;
-import com.microsoft.applicationinsights.web.extensibility.modules.WebTelemetryModule;
 import com.microsoft.applicationinsights.web.internal.ThreadContext;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
@@ -10,21 +7,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
+import org.springframework.web.servlet.HandlerInterceptor;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.util.Optional;
 
 @Configuration
 @Slf4j
-public class ClientTrackingTelemetryModule implements TelemetryModule, WebTelemetryModule {
+public class ClientTrackingInterceptor implements HandlerInterceptor {
 
-    @Override
-    public void onBeginRequest(ServletRequest req, ServletResponse res) {
+    public boolean preHandle(HttpServletRequest req, HttpServletResponse response, Object handler) {
 
-        var token = ((HttpServletRequest) req).getHeader(HttpHeaders.AUTHORIZATION);
+        var token = req.getHeader(HttpHeaders.AUTHORIZATION);
         if (StringUtils.startsWithIgnoreCase(token, "Bearer ")) {
             try {
                 var claimsSet = getClaimsFromJWT(token);
@@ -39,19 +35,12 @@ public class ClientTrackingTelemetryModule implements TelemetryModule, WebTeleme
                         .ifPresent(clientId -> properties.put("clientId", clientId));
 
             } catch (ParseException e) {
-                ClientTrackingTelemetryModule.log.warn("problem decoding jwt public key for application insights", e);
+                ClientTrackingInterceptor.log.warn("problem decoding jwt public key for application insights", e);
             }
         }
+        return true;
     }
 
-    @Override
-    public void onEndRequest(ServletRequest req, ServletResponse res) {
-    }
-
-    @Override
-    public void initialize(TelemetryConfiguration telemetryConfiguration) {
-
-    }
     private JWTClaimsSet getClaimsFromJWT(String token) throws ParseException {
         var signedJWT = SignedJWT.parse(token.replace("Bearer ", ""));
         return signedJWT.getJWTClaimsSet();

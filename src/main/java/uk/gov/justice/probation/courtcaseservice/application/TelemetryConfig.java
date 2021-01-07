@@ -4,6 +4,8 @@ import com.microsoft.applicationinsights.TelemetryClient;
 import com.microsoft.applicationinsights.telemetry.BaseTelemetry;
 import com.microsoft.applicationinsights.web.internal.RequestTelemetryContext;
 import com.microsoft.applicationinsights.web.internal.ThreadContext;
+import com.microsoft.applicationinsights.web.internal.WebRequestTrackingFilter;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
@@ -44,4 +46,14 @@ public class TelemetryConfig {
                 .map(BaseTelemetry::getProperties)
                 .orElse(Collections.emptyMap());
     }
+
+    @Bean
+    public FilterRegistrationBean aiFilterRegistration() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(new WebRequestTrackingFilter());
+        registration.addUrlPatterns("/**");
+        registration.setOrder(1);
+        return registration;
+    }
+
 }
