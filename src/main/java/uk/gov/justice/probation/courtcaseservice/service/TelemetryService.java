@@ -2,6 +2,7 @@ package uk.gov.justice.probation.courtcaseservice.service;
 
 import com.microsoft.applicationinsights.TelemetryClient;
 import lombok.AllArgsConstructor;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 import uk.gov.justice.probation.courtcaseservice.jpa.entity.CourtCaseEntity;
 import uk.gov.justice.probation.courtcaseservice.jpa.entity.GroupedOffenderMatchesEntity;
@@ -74,9 +75,9 @@ public class TelemetryService {
     }
 
     private void addRequestProperties(Map<String, String> properties) {
-        Optional.ofNullable(requestProperties.get("username"))
+        Optional.ofNullable(MDC.get("username"))
                 .ifPresent((caseNo) -> properties.put("username", caseNo));
-        Optional.ofNullable(requestProperties.get("clientId"))
+        Optional.ofNullable(MDC.get("clientId"))
                 .ifPresent((caseNo) -> properties.put("clientId", caseNo));
     }
 }

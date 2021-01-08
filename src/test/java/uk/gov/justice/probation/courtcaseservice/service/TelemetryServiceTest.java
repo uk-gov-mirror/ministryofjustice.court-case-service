@@ -8,6 +8,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.MDC;
 import uk.gov.justice.probation.courtcaseservice.jpa.entity.CourtCaseEntity;
 import uk.gov.justice.probation.courtcaseservice.jpa.entity.GroupedOffenderMatchesEntity;
 import uk.gov.justice.probation.courtcaseservice.jpa.entity.OffenderMatchEntity;
@@ -20,7 +21,6 @@ import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static uk.gov.justice.probation.courtcaseservice.testUtil.DateHelper.standardDateOf;
 
 @ExtendWith(MockitoExtension.class)
@@ -43,11 +43,13 @@ class TelemetryServiceTest {
 
     @InjectMocks
     private TelemetryService service;
+    @Mock
+    private Map<String, String> contextMap;
 
     @Test
     public void givenUserDetailsAvailable_whenTrackMatchEvent_thenAddAllProperties() {
-        when(requestProperties.get("username")).thenReturn("Arthur");
-        when(requestProperties.get("clientId")).thenReturn("Van der Linde");
+        MDC.put("username", "Arthur");
+        MDC.put("clientId", "Van der Linde");
 
         OffenderMatchEntity match = OffenderMatchEntity.builder()
                 .group(GroupedOffenderMatchesEntity.builder()
@@ -75,12 +77,13 @@ class TelemetryServiceTest {
         assertThat(properties.get("clientId")).isEqualTo("Van der Linde");
 
         assertThat(metricsCaptor.getValue().isEmpty());
+        MDC.clear();
     }
 
     @Test
     public void givenUserDetailsAvailable_whenTrackCourtCaseEvent_thenAddAllProperties() {
-        when(requestProperties.get("username")).thenReturn("Arthur");
-        when(requestProperties.get("clientId")).thenReturn("Van der Linde");
+        MDC.put("username", "Arthur");
+        MDC.put("clientId", "Van der Linde");
 
         CourtCaseEntity courtCase = buildCourtCase();
 
@@ -100,6 +103,7 @@ class TelemetryServiceTest {
         assertThat(properties.get("clientId")).isEqualTo("Van der Linde");
 
         assertThat(metricsCaptor.getValue().isEmpty());
+        MDC.clear();
     }
 
     @Test
