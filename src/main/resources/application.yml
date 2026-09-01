@@ -1,7 +1,7 @@
 bail-information-analytics-sharepoint:
-  tenant-id: ${bail-information-analytics-sharepoint-tenant-id}
-  client-id: ${bail-information-analytics-sharepoint-client-id}
-  client-secret: ${bail-information-analytics-sharepoint-client-secret}
+  tenant-id: ${bail-information-analytics-sharepoint-tenant-id:}
+  client-id: ${bail-information-analytics-sharepoint-client-id:}
+  client-secret: ${bail-information-analytics-sharepoint-client-secret:}
   user-id: ${bail-information-analytics-sharepoint-user-id:}
   site-host: ${bail-information-analytics-sharepoint-site-host:}
   site-path: ${bail-information-analytics-sharepoint-site-path:}

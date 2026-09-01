@@ -10,13 +10,13 @@ import org.springframework.web.reactive.function.client.WebClient
 
 @Component
 class SharePointClient(
-  @param:Value("\${bail-information-analytics-sharepoint.tenant-id}") private val tenantId: String,
-  @param:Value("\${bail-information-analytics-sharepoint.client-id}") private val clientId: String,
-  @param:Value("\${bail-information-analytics-sharepoint.client-secret}") private val clientSecret: String,
+  @param:Value("\${bail-information-analytics-sharepoint.tenant-id:}") private val tenantId: String,
+  @param:Value("\${bail-information-analytics-sharepoint.client-id:}") private val clientId: String,
+  @param:Value("\${bail-information-analytics-sharepoint.client-secret:}") private val clientSecret: String,
   @param:Value("\${bail-information-analytics-sharepoint.user-id:}") private val userId: String,
   @param:Value("\${bail-information-analytics-sharepoint.site-host:}") private val siteHost: String,
   @param:Value("\${bail-information-analytics-sharepoint.site-path:}") private val sitePath: String,
-  @param:Value("\${bail-information-analytics-sharepoint.upload-folder-path}") private val uploadFolderPath: String,
+  @param:Value("\${bail-information-analytics-sharepoint.upload-folder-path:}") private val uploadFolderPath: String,
 ) {
 
   companion object {
