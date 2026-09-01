@@ -34,17 +34,13 @@ class BailInformationService(
     sharePointClient.uploadFile(fileName, csv.toByteArray(StandardCharsets.UTF_8))
   }
 
-  private fun toCsvLine(values: List<String?>): String =
-    values.joinToString(",") { value ->
-      if (value == null) {
-        ""
-      } else {
-        val escaped = value.replace("\"", "\"\"")
-        if (escaped.contains(',') || escaped.contains('"') || escaped.contains('\n')) {
-          "\"$escaped\""
-        } else {
-          escaped
-        }
-      }
+  private fun toCsvLine(values: List<String?>): String = values.joinToString(",") { value -> formatCell(value) }
+
+  private fun formatCell(value: String?): String = when (value) {
+    null -> ""
+    else -> {
+      val escaped = value.replace("\"", "\"\"")
+      if (escaped.contains(',') || escaped.contains('"') || escaped.contains('\n')) "\"$escaped\"" else escaped
     }
+  }
 }
